@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Sistema - Locadora</title>
+	<style>
+body {
+	width: 100%;
+	height: 657px;
+	background: linear-gradient(-135deg, #ddc6a1, #7d6c68);
+}
+</style>
+</h:head>
+
+<h:body>
+
+	<h:form id="formularioLogin">
+
+		<p:growl id="growl" showDetail="true" life="4000" />
+
+		<div class="login-page">
+			<div class="form">
+				<form class="register-form">
+					<h:graphicImage class="imagem_login" name="images/logo01.jpg"
+						library="adamantium-layout" />
+
+
+					<p:inputText value="#{loginBacking.login}" required="true"
+						requiredMessage="Login obrigatório!" type="text"
+						placeholder="Login">
+						<p:ajax event="focus" />
+					</p:inputText>
+					<p:password value="#{loginBacking.senha}"
+						requiredMessage="Senha obrigatória!" required="true"
+						type="password" placeholder="Senha" />
+
+
+					<p:commandButton class="btnLogin btn3" value="Login"
+						action="#{loginBacking.efetuarLogin}" update="@form">
+					</p:commandButton>
+
+				</form>
+
+
+			</div>
+		</div>
+
+	</h:form>
+</h:body>
+
+</html>

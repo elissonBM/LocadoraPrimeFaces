@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+		<title>Sistema - Locadora</title>
+
+		<p:panelGrid rendered="#{loginBacking.user}">
+
+
+			<div class="containerIndex">
+				<p class="animated-word">
+					<a href="cad-locacao.xhtml">Cadastrar Locação</a>
+				</p>
+
+				<p class="animated-word">
+					<a href="cad-devolucao.xhtml">Cadastrar Devolução</a>
+				</p>
+
+				<p class="animated-word">
+					<a href="cad-cliente.xhtml">Cadastrar cliente</a>
+				</p>
+
+			</div>
+
+			<div class="containerIndex">
+				<p class="animated-word">
+					<a href="list-Locacao.xhtml">Consultar Locações</a>
+				</p>
+				
+				<p class="animated-word">
+					<a href="list-filme.xhtml">Consultar Filmes</a>
+				</p>
+				
+				<p class="animated-word">
+					<a href="list-cliente.xhtml">Consultar Clientes</a>
+				</p>
+
+
+			</div>
+
+		</p:panelGrid>
+		
+		<h:graphicImage name="images/iconebg.png" library="adamantium-layout" rendered="#{!loginBacking.user}"
+		style="height:250px;  margin-top:80px; margin-left:250px;"
+		/> 	
+		
+
+
+	</ui:define>
+
+</ui:composition>

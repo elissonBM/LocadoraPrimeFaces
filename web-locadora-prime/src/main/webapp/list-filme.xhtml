@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+		<title>Consulta de Filmes</title>
+
+		<h:form id="listFilme">
+
+			<p:growl id="growl" showDetail="true" life="4000" />
+
+			<p:tabView>
+
+				<p:tab id="ltFilme" title="Filmes Cadastrados">
+
+					<p:panel id="pnFilmes">
+
+						<h:panelGrid columns="2">
+							
+							<p:inputText value="#{filmeBacking.nomePesquisar}" size="80" placeholder="pesquise por Filme" />
+							
+							<p:commandButton id="btnPesquisar" value="Pesquisar"
+								action="#{filmeBacking.pesquisar}" update="@form" />
+						</h:panelGrid>
+
+						<p:separator />
+
+						<h:panelGrid columns="1">
+
+							<p:dataTable id="tabelaFilmes"
+								value="#{filmeBacking.listaFilmes}" var="filme"
+	
+								 lazy="true"
+								emptyMessage="Nenhum registro encontrado!"
+								rowKey="#{filme.idFilme}" selectionMode="single"
+								selection="#{filmeBacking.filmeSelecionado}">
+
+								<f:facet name="header">
+            							Filmes Cadastrados
+       								</f:facet>
+       								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Código" />
+									</f:facet>
+									<h:outputText value="#{filme.idFilme}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Nome" />
+									</f:facet>
+									<h:outputText value="#{filme.nome}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Valor" />
+									</f:facet>
+									<h:outputText value="#{filme.valor}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Disponível" />
+									</f:facet>
+									<h:outputText value="#{filme.disponivel}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Gênero" />
+									</f:facet>
+									<h:outputText value="#{filme.genero}" />
+								</p:column>
+
+							</p:dataTable>
+							
+							<p:contextMenu for="tabelaFilmes">
+								<p:menuitem value="Alterar"  action="#{filmeBacking.alterar}" rendered="#{loginBacking.dev || loginBacking.adm}" update="@form"/>
+								<p:menuitem value="Detalhar" action="#{filmeBacking.detalhar}" update="@form"/>
+								<p:menuitem value="Excluir" rendered="#{loginBacking.dev}" action="#{filmeBacking.excluir}" update="@form">
+									<p:confirm header="Excluir Filme" message="Confirma exclusão?"/>
+								</p:menuitem>
+								
+							</p:contextMenu>
+							
+							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+								<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+								<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+							</p:confirmDialog>
+
+						</h:panelGrid>
+						
+						<div align="center">
+								<p:commandButton id="btnSair" value="Sair"
+									action="#{locacaoBacking.sair}" update="@form" />
+							</div>
+
+					</p:panel>
+
+
+				</p:tab>
+
+			</p:tabView>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

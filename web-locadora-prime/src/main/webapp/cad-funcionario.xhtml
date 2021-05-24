@@ -1,0 +1,201 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+		<title>Cadastro de Funcionário</title>
+
+		<h:form id="formCadFuncionario">
+
+			<p:growl id="growl" showDetail="true" life="9000" />
+
+			<p:tabView>
+
+				<p:tab id="cadBasico" title="Dados Básicos">
+
+					<p:panel id="pnFuncionario">
+
+						<p:panelGrid columns="2">
+
+							<p:outputLabel value="Nome:" />
+							<p:inputText value="#{funcionarioBacking.nome}" size="30"
+								maxlength="45" placeholder="Ex: Rogerio Almeida" />
+
+							<p:outputLabel value="CPF:" />
+							<p:inputMask value="#{funcionarioBacking.cpf}" size="30"
+								maxlength="15" mask="999.999.999-99"
+								placeholder="Ex: 000.000.000-00" />
+
+							<p:outputLabel value="RG:" />
+							<p:inputMask value="#{funcionarioBacking.rg}" size="30"
+								maxlength="15" mask="99.999.999-*"
+								placeholder="Ex: 00.000.000-0" />
+
+							<p:outputLabel value="Data Nascimento:" />
+							<p:calendar id="button"
+								value="#{funcionarioBacking.dataNascimento}" showOn="button"
+								pattern="dd/MM/yyyy" placeholder="Ex: 01/01/2021" />
+
+							<p:outputLabel value="Idade:" />
+							<p:inputText value="#{funcionarioBacking.idade}" size="30"
+								maxlength="2" placeholder="Ex: 18" />
+
+							<p:outputLabel value="Sexo:" />
+							<p:selectOneRadio id="sexo" value="#{funcionarioBacking.sexo}">
+								<f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+								<f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+							</p:selectOneRadio>
+
+						</p:panelGrid>
+						<p:panelGrid columns="3">
+							<p:commandButton id="btnSalvar" value="Salvar"
+								action="#{funcionarioBacking.cadastrar}" update="@form" />
+
+							<p:commandButton id="btnCancelar" value="Cancelar"
+								action="#{funcionarioBacking.cancelar}" update="@form" />
+
+							<p:commandButton id="btnSair" value="Sair"
+								action="#{funcionarioBacking.sair}" update="@form" />
+						</p:panelGrid>
+						<p:blockUI block="pnFuncionario" trigger="btnSalvar" />
+					</p:panel>
+				</p:tab>
+
+				<p:tab id="cadEndereco" title="Dados de Endereço">
+					<p:panel id="pnEndereco">
+						<p:panelGrid columns="2">
+							<p:outputLabel value="Logradouro:" />
+							<p:selectOneMenu value="#{funcionarioBacking.logradouro}"
+								filter="true">
+								<f:selectItem
+									itemValue="#{funcionarioBacking.carregarLogradouro()}"
+									itemLabel="- Selecione Logradouro -" />
+								<f:selectItems value="#{funcionarioBacking.listaLogradouro}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Endereço:" />
+							<p:inputText value="#{funcionarioBacking.enderecoAux}" size="30"
+								maxlength="45" placeholder="Ex: Bom Pastor  " />
+
+							<p:outputLabel value="Número:" />
+							<p:inputText value="#{funcionarioBacking.numero}" size="30"
+								maxlength="6" placeholder="Ex: 0000  " />
+
+							<p:outputLabel value="Bairro:" />
+							<p:inputText value="#{funcionarioBacking.bairro}" size="30"
+								placeholder="Ex: Contenda " />
+
+							<p:outputLabel value="Complemento:" />
+							<p:inputText value="#{funcionarioBacking.complemento}" size="30"
+								maxlength="10" placeholder="Ex: Apartamento 00 " />
+
+							<p:outputLabel value="CEP:" />
+							<p:inputText value="#{funcionarioBacking.cep}" size="30"
+								mask="99999-999" placeholder="Ex: 00000-000  " />
+
+							<p:outputLabel value="Estado:" />
+							<p:selectOneMenu filter="true" value="#{funcionarioBacking.uf}"
+								size="30">
+								<f:selectItem itemValue="" itemLabel="- Selecione Estado -" />
+								<f:selectItems value="#{funcionarioBacking.listaEstados}"
+									var="est" itemLabel="#{est.nome}" itemValue="#{est.idEstado}" />
+								<p:ajax event="change" update="cidadeCombo"
+									listener="#{funcionarioBacking.carregarCidade}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Cidade:" />
+							<p:selectOneMenu id="cidadeCombo" filter="true"
+								value="#{funcionarioBacking.cidade}" size="30">
+								<f:selectItem itemValue="" itemLabel="- Selecione Cidade -" />
+								<f:selectItems value="#{funcionarioBacking.listaCidades}"
+									var="cid" itemLabel="#{cid.nome}" itemValue="#{cid.idCidade}" />
+							</p:selectOneMenu>
+
+							<p:panelGrid columns="3">
+								<p:commandButton id="btnSalvar2" value="Salvar"
+									action="#{funcionarioBacking.cadastrar}" update="@form" />
+
+								<p:commandButton id="btnCancelar2" value="Cancelar"
+									action="#{funcionarioBacking.cancelar}" update="@form" />
+
+								<p:commandButton id="btnSair2" value="Sair"
+									action="#{funcionarioBacking.sair}" update="@form" />
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="cadContato" title="Dados de Contato">
+					<p:panel id="pnContato">
+						<p:panelGrid columns="2">
+							<p:outputLabel value="Telefone:" />
+							<p:inputMask value="#{funcionarioBacking.telefone}" size="30"
+								mask="(99) 9999-9999" placeholder="Ex: (00)0000-0000  " />
+
+							<p:outputLabel value="Celular:" />
+							<p:inputMask value="#{funcionarioBacking.celular}" size="30"
+								mask="(99) 99999-9999" placeholder="Ex: (00)00000-0000  " />
+
+							<p:outputLabel value="E-mail:" />
+							<p:inputText value="#{funcionarioBacking.email}" size="30"
+								maxlength="45" placeholder="Ex: seu_email@email.com  " />
+
+							<p:panelGrid columns="3">
+								<p:commandButton id="btnSalvar3" value="Salvar"
+									action="#{funcionarioBacking.cadastrar}" update="@form" />
+
+								<p:commandButton id="btnCancelar3" value="Cancelar"
+									action="#{funcionarioBacking.cancelar}" update="@form" />
+
+								<p:commandButton id="btnSair3" value="Sair"
+									action="#{funcionarioBacking.sair}" update="@form" />
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="cadAcesso" title="Dados de Acesso">
+					<p:panel id="pnAcesso">
+						<p:panelGrid columns="6">
+							<p:outputLabel value="Login:" />
+							<p:inputText value="#{funcionarioBacking.login}" size="30"
+								maxlength="45" />
+
+							<p:outputLabel value="Senha:" />
+							<p:password size="30" id="feedback"
+								value="#{funcionarioBacking.senha}" feedback="true" />
+
+							<p:outputLabel value="Perfil de Acesso:" />
+							<p:selectOneMenu value="#{funcionarioBacking.perfilAcesso}"
+								size="30" filter="true">
+								<f:selectItem
+									itemValue="#{funcionarioBacking.carregarPerfilAcesso()}"
+									itemLabel="- Selecione Perfil -" />
+								<f:selectItems value="#{funcionarioBacking.listaPerfilAcesso}" />
+
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+
+						<h:panelGrid columns="3">
+						
+							<p:commandButton id="btnSalvar4" value="Salvar"
+								action="#{funcionarioBacking.cadastrar}" update="@form"/>
+							<p:commandButton id="btnCancelar4" value="Cancelar"
+								action="#{funcionarioBacking.cancelar}" update="@form"/>
+							<p:commandButton id="btnSair4" value="Sair"
+								action="#{funcionarioBacking.sair}" update="@form"/>
+
+						</h:panelGrid>
+
+					</p:panel>
+
+				</p:tab>
+
+			</p:tabView>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

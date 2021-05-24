@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+		<title>Consulta de Funcionarios</title>
+
+		<h:form id="listFuncionario">
+
+			<p:growl id="growl" showDetail="true" life="4000" />
+
+			<p:tabView>
+
+				<p:tab id="ltFilme" title="Funcionários Cadastrados">
+
+					<p:panel id="pnFilmes">
+
+						<h:panelGrid columns="2">
+							<p:inputText value="#{funcionarioBacking.nomePesquisar}"
+								size="80" />
+							<p:commandButton id="btnPesquisar" value="Pesquisar"
+								action="#{funcionarioBacking.pesquisar}" update="@form" />
+						</h:panelGrid>
+
+						<p:separator />
+						<p:panelGrid columns="1">
+
+							<p:dataTable id="tabelaFuncionarios"
+								value="#{funcionarioBacking.listaFuncionarios}"
+								var="funcionario" emptyMessage="Nenhum registro encontrado"
+								lazy="true"
+								rowKey="#{funcionario.contatoIdContato}"
+								selection="#{funcionarioBacking.funcionarioSelecionado}"
+								selectionMode="single">
+
+								<f:facet name="header">
+            							Funcionarios Cadastrados
+       								</f:facet>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Código" />
+									</f:facet>
+									<h:outputText value="#{funcionario.idFuncionario}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Nome" />
+									</f:facet>
+									<h:outputText value="#{funcionario.nome}" />
+								</p:column>
+
+								<p:column colspan="2">
+									<f:facet name="header">
+										<h:outputText value="Cidade - UF" />
+									</f:facet>
+									<h:outputText value="#{funcionario.enderecoIdEndereco.cidadeIdCidade.nome}" />
+									
+									-<h:outputText value="#{funcionario.enderecoIdEndereco.cidadeIdCidade.estadoIdEstado.uf}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Idade" />
+									</f:facet>
+									<h:outputText value="#{funcionario.idade}" />
+								</p:column>
+
+								<p:column>
+									<f:facet name="header">
+										<h:outputText value="Celular" />
+									</f:facet>
+									<h:outputText value="#{funcionario.contatoIdContato.celular}" />
+								</p:column>
+							</p:dataTable>
+
+							<p:contextMenu for="tabelaFuncionarios">
+							
+							
+									
+								<p:menuitem value="Alterar"
+									action="#{funcionarioBacking.alterar}" rendered="#{loginBacking.adm || loginBacking.dev}" update="@form" />
+									
+									<p:menuitem value="Detalhar"
+									action="#{funcionarioBacking.detalhar}" rendered="true"  update="@form" />
+									
+								<p:menuitem value="Excluir"
+									action="#{funcionarioBacking.excluir}" rendered="#{loginBacking.dev}" update="@form">
+									<p:confirm header="Excluir funcionário"
+										message="Deseja realmente excluir este funcionário" />
+										
+								</p:menuitem>
+							</p:contextMenu>
+
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Sim" type="button"
+									styleClass="ui-confirmdialog-yes" />
+								<p:commandButton value="Não" type="button"
+									styleClass="ui-confirmdialog-no" />
+							</p:confirmDialog>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

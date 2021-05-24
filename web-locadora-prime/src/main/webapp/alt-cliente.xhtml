@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="corpo">
+		<title>Alteração de Cliente</title>
+
+		<h:form id="formAltCliente">
+
+			<p:growl id="growl" showDetail="true" life="9000" />
+
+			<p:tabView>
+
+				<p:tab id="cadBasico" rendered="false" title="Dados Básicos">
+
+					<p:panel id="pnCliente">
+
+						<p:panelGrid columns="2">
+
+							<p:outputLabel value="Nome:" />
+							<p:inputText value="#{clienteBacking.nome}" size="30"
+								maxlength="45" placeholder="Ex: Rogerio Almeida" />
+
+							<p:outputLabel value="CPF:" />
+							<p:inputMask value="#{clienteBacking.cpf}" size="30"
+								maxlength="15" mask="999.999.999-99"
+								placeholder="Ex: 000.000.000-00" />
+
+							<p:outputLabel value="RG:" />
+							<p:inputMask value="#{clienteBacking.rg}" size="30"
+								maxlength="15" mask="99.999.999-*"
+								placeholder="Ex: 00.000.000-0" />
+
+							<p:outputLabel value="Data Nascimento:" />
+						<p:calendar id="button"
+							value="#{clienteBacking.dataNascimento}" showOn="button"
+							pattern="dd/MM/yyyy" placeholder="Ex: 01/01/2021" />
+
+							<p:outputLabel value="Idade:" />
+							<p:inputText value="#{clienteBacking.idade}" size="30"
+								maxlength="2" placeholder="Ex: 18" />
+
+							<p:outputLabel value="Sexo:" />
+							<p:selectOneRadio id="sexo" value="#{clienteBacking.sexo}">
+								<f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+								<f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+							</p:selectOneRadio>
+
+						</p:panelGrid>
+						<p:panelGrid columns="3">
+							<p:commandButton id="btnSalvar" value="Salvar"
+								action="#{clienteBacking.cadastrar}" update="@form" />
+
+							<p:commandButton id="btnCancelar" value="Cancelar"
+								action="#{clienteBacking.cancelar}" update="@form" />
+
+							<p:commandButton id="btnSair" value="Sair"
+								action="#{clienteBacking.sair}" update="@form" />
+						</p:panelGrid>
+						<p:blockUI block="pnCliente" trigger="btnSalvar" />
+					</p:panel>
+				</p:tab>
+
+				<p:tab id="cadEndereco" title="Dados de Endereço">
+					<p:panel id="pnEndereco">
+						<p:panelGrid columns="2">
+							<p:outputLabel value="Logradouro:" />
+							<p:selectOneMenu value="#{clienteBacking.logradouro}"
+								filter="true">
+								<f:selectItem
+									itemValue="#{clienteBacking.carregarLogradouro()}"
+									itemLabel="- Selecione Logradouro -" />
+								<f:selectItems value="#{clienteBacking.listaLogradouro}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Endereço:" />
+							<p:inputText value="#{clienteBacking.enderecoAux}" size="30"
+								maxlength="45" placeholder="Ex: Bom Pastor  " />
+
+							<p:outputLabel value="Número:" />
+							<p:inputText value="#{clienteBacking.numero}" size="30"
+								maxlength="6" placeholder="Ex: 0000  " />
+
+							<p:outputLabel value="Bairro:" />
+							<p:inputText value="#{clienteBacking.bairro}" size="30"
+								placeholder="Ex: Contenda " />
+
+							<p:outputLabel value="Complemento:" />
+							<p:inputText value="#{clienteBacking.complemento}" size="30"
+								maxlength="10" placeholder="Ex: Apartamento 00 " />
+
+							<p:outputLabel value="CEP:" />
+							<p:inputText value="#{clienteBacking.cep}" size="30"
+								mask="99999-999" placeholder="Ex: 00000-000  " />
+
+							<p:outputLabel value="Estado:" />
+							<p:selectOneMenu filter="true" value="#{clienteBacking.uf}"
+								size="30">
+								<f:selectItem itemValue="" itemLabel="- Selecione Estado -" />
+								<f:selectItems value="#{clienteBacking.listaEstados}"
+									var="est" itemLabel="#{est.nome}" itemValue="#{est.idEstado}" />
+								<p:ajax event="change" update="cidadeCombo"
+									listener="#{clienteBacking.carregarCidade}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Cidade:" />
+							<p:selectOneMenu id="cidadeCombo" filter="true"
+								value="#{clienteBacking.cidade}" size="30">
+								<f:selectItem itemValue="" itemLabel="- Selecione Cidade -" />
+								<f:selectItems value="#{clienteBacking.listaCidades}"
+									var="cid" itemLabel="#{cid.nome}" itemValue="#{cid.idCidade}" />
+							</p:selectOneMenu>
+
+							<p:panelGrid columns="3">
+								<p:commandButton id="btnSalvar2" value="Salvar"
+									action="#{clienteBacking.cadastrar}" update="@form" />
+
+								<p:commandButton id="btnCancelar2" value="Cancelar"
+									action="#{clienteBacking.cancelar}" update="@form" />
+
+								<p:commandButton id="btnSair2" value="Sair"
+									action="#{clienteBacking.sair}" update="@form" />
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				<p:tab id="cadContato" title="Dados de Contato">
+					<p:panel id="pnContato">
+						<p:panelGrid columns="2">
+							<p:outputLabel value="Telefone:" />
+							<p:inputMask value="#{clienteBacking.telefone}" size="30"
+								mask="(99) 9999-9999" placeholder="Ex: (00)0000-0000  " />
+
+							<p:outputLabel value="Celular:" />
+							<p:inputMask value="#{clienteBacking.celular}" size="30"
+								mask="(99) 99999-9999" placeholder="Ex: (00)00000-0000  " />
+
+							<p:outputLabel value="E-mail:" />
+							<p:inputText value="#{clienteBacking.email}" size="30"
+								maxlength="45" placeholder="Ex: seu_email@email.com  " />
+
+							<p:panelGrid columns="3">
+								<p:commandButton id="btnSalvar3" value="Salvar"
+									action="#{clienteBacking.alterarCliente}" update="@form" />
+
+								<p:commandButton id="btnCancelar3" value="Cancelar"
+									action="#{clienteBacking.cancelar}" update="@form" />
+
+								<p:commandButton id="btnSair3" value="Sair"
+									action="#{clienteBacking.sair}" update="@form" />
+							</p:panelGrid>
+						</p:panelGrid>
+					</p:panel>
+				</p:tab>
+				
+			</p:tabView>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
